@@ -1,0 +1,366 @@
+<!--Navbar-->
+<mdb-navbar SideClass="navbar navbar-expand-lg navbar-dark indigo">
+
+  <!-- Navbar brand -->
+  <mdb-navbar-brand><a class="navbar-brand" href="#">Life Guard</a></mdb-navbar-brand>
+
+  <!-- Collapsible content -->
+  <links>
+
+    <!-- Links -->
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link waves-light" mdbWavesEffect>Home<span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link waves-light" mdbWavesEffect>About</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link waves-light" mdbWavesEffect>Contact</a>
+      </li>
+
+      <!-- Dropdown -->
+
+
+    </ul>
+    <!-- Links -->
+
+    <!-- Search form -->
+    <form class="form-inline">
+      <div class="md-form my-0">
+        <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+      </div>
+      <button class="btn btn-outline-white btn-md my-2 my-sm-0 ml-3" type="submit">Search</button>
+    </form>
+  </links>
+  <!-- Collapsible content -->
+
+</mdb-navbar>
+
+<div class="content-wrap" igxLayout>
+  <igx-nav-drawer id="navigation" [pin]="true" [pinThreshold]="0">
+    <ng-template igxDrawer>
+      <span igxDrawerItem [isHeader]="true"> {{dateString}} </span>
+      <span igxDrawerItem igxRipple>
+        <igx-icon fontSet="material">home</igx-icon>
+        <span>Home</span>
+      </span>
+      <span igxDrawerItem (click)='viewPendingProfile()'>
+        <igx-icon color="black"><i class="material-icons">
+            person_add
+          </i></igx-icon>
+        <span>Pending Profiles</span>
+      </span>
+      <span igxDrawerItem (click)='viewApprovedProfile()'>
+        <igx-icon color="black"><i class="material-icons">
+            how_to_reg
+          </i></igx-icon>
+        <span>Approved Profiles</span>
+      </span>
+      <span igxDrawerItem (click)='viewRejectedProfile()'>
+        <igx-icon color="black"><i class="material-icons">
+            person_add_disabled
+          </i></igx-icon>
+        <span>Rejected Profiles</span>
+      </span>
+      <span igxDrawerItem (click)='adminLogOut()'>
+        <igx-icon color="black"><i class="fas fa-sign-out-alt"></i></igx-icon>
+        <span>Log Out</span>
+      </span>
+    </ng-template>
+    <ng-template igxDrawerMini>
+      <span igxDrawerItem igxRipple>
+        <igx-icon fontSet="material">home</igx-icon>
+      </span>
+      <span igxDrawerItem (click)='viewPendingProfile()'>
+        <igx-icon color="black"><i class="material-icons">
+            person_add
+          </i></igx-icon>
+      </span>
+      <span igxDrawerItem (click)='viewApprovedProfile()'>
+        <igx-icon color="black"><i class="material-icons">
+            how_to_reg
+          </i></igx-icon>
+      </span>
+      <span igxDrawerItem (click)='viewRejectedProfile()'>
+        <igx-icon color="black"><i class="material-icons">
+            person_add_disabled
+          </i></igx-icon>
+      </span>
+      <span igxDrawerItem (click)='adminLogOut()'>
+        <igx-icon color="black"><i class="fas fa-sign-out-alt"></i></igx-icon>
+      </span>
+    </ng-template>
+  </igx-nav-drawer>
+  <main igxFlex>
+    <!-- <button (click)="drawer.toggle()"> Menu </button> -->
+    <span igxButton="icon" igxToggleAction="navigation" [closeOnOutsideClick]="false">
+      <igx-icon fontSet="material">menu</igx-icon>
+    </span>
+    <div *ngFor="let profile of hospitalProfiles">
+      <span *ngIf="profile.profileStatus==='Not Approved' && showPending">
+        <!-- <div class="card" id="crd">
+          <div class="card-body" id="body"> -->
+            <mat-accordion>
+              <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    <h6><i class="fas fa-hospital"></i> {{profile.hospitalName}}</h6>
+                  </mat-panel-title>
+                  <mat-panel-description>
+                    <h6>{{profile.city}}</h6>
+                  </mat-panel-description>
+                </mat-expansion-panel-header>
+                <table class="table table-striped">
+                  <tbody>
+                    <td>Registration No.</td>
+                    <td>{{profile.govtRegNo}}</td>
+                  </tbody>
+                  <tbody>
+                    <td>Phone No.</td>
+                    <td>{{profile.phoneNumber}}</td>
+                  </tbody>
+                  <tbody>
+                    <td>Email ID</td>
+                    <td>{{profile.emailId}}</td>
+                  </tbody>
+                  <tbody>
+                    <td>Profile Status</td>
+                    <td>{{profile.profileStatus}}</td>
+                  </tbody>
+                  <tbody>
+                    <td><button class="btn btn-info " type="submit" (click)="openPopup(profile.govtRegNo,'Approved')">Approve</button></td>
+                    <td><button class="btn btn-info " type="submit" (click)="openPopupReject(profile.govtRegNo,'Rejected')">Reject</button></td>
+                  </tbody>
+                </table>
+                <!-- <span > -->
+                    
+                
+                        
+            
+                  <!-- </span> -->
+              </mat-expansion-panel>
+            </mat-accordion>
+           
+          <!-- </div>
+        </div> -->
+      </span>
+      <span *ngIf="profile.profileStatus==='Approved' && showApproved">
+          <!-- <div class="card" id="crd">
+            <div class="card-body" id="body"> -->
+              <mat-accordion>
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <h6><i class="fas fa-hospital"></i> {{profile.hospitalName}}</h6>
+                    </mat-panel-title>
+                    <mat-panel-description>
+                      <h6>{{profile.city}}</h6>
+                    </mat-panel-description>
+                  </mat-expansion-panel-header>
+                  <table class="table table-striped">
+                    <tbody>
+                      <td>Registration No.</td>
+                      <td>{{profile.govtRegNo}}</td>
+                    </tbody>
+                    <tbody>
+                      <td>Phone No.</td>
+                      <td>{{profile.phoneNumber}}</td>
+                    </tbody>
+                    <tbody>
+                      <td>Email ID</td>
+                      <td>{{profile.emailId}}</td>
+                    </tbody>
+                    <tbody>
+                      <td>Profile Status</td>
+                      <td>{{profile.profileStatus}}</td>
+                    </tbody>
+                  </table>
+                </mat-expansion-panel>
+              </mat-accordion>
+  
+            <!-- </div>
+          </div> -->
+        </span>
+        <span *ngIf="profile.profileStatus==='Rejected' && showRejected">
+            <!-- <div class="card" id="crd">
+              <div class="card-body" id="body"> -->
+                <mat-accordion>
+                  <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                      <mat-panel-title>
+                        <h6><i class="fas fa-hospital"></i> {{profile.hospitalName}}</h6>
+                      </mat-panel-title>
+                      <mat-panel-description>
+                        <h6>{{profile.city}}</h6>
+                      </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <table class="table table-striped">
+                      <tbody>
+                        <td>Registration No.</td>
+                        <td>{{profile.govtRegNo}}</td>
+                      </tbody>
+                      <tbody>
+                        <td>Phone No.</td>
+                        <td>{{profile.phoneNumber}}</td>
+                      </tbody>
+                      <tbody>
+                        <td>Email ID</td>
+                        <td>{{profile.emailId}}</td>
+                      </tbody>
+                      <tbody>
+                        <td>Profile Status</td>
+                        <td>{{profile.profileStatus}}</td>
+                      </tbody>
+                    </table>
+                  </mat-expansion-panel>
+                </mat-accordion>
+    
+              <!-- </div>
+            </div> -->
+          </span>
+    </div>
+  </main>
+</div>
+
+<!-- Footer -->
+<footer class="page-footer font-small unique-color-dark">
+
+  <div style="background-color: #6351ce;">
+    <div class="container">
+
+      <!-- Grid row-->
+      <div class="row py-4 d-flex align-items-center">
+
+        <!-- Grid column -->
+        <div class="col-md-6 col-lg-5 text-center text-md-left mb-4 mb-md-0">
+          <h6 class="mb-0">Get connected with us on social networks!</h6>
+        </div>
+        <!-- Grid column -->
+
+        <!-- Grid column -->
+        <div class="col-md-6 col-lg-7 text-center text-md-right">
+
+          <!-- Facebook -->
+          <a class="fb-ic">
+            <i class="fab fa-facebook-f white-text mr-4"> </i>
+          </a>
+          <!-- Twitter -->
+          <a class="tw-ic">
+            <i class="fab fa-twitter white-text mr-4"> </i>
+          </a>
+          <!-- Google +-->
+          <a class="gplus-ic">
+            <i class="fab fa-google-plus-g white-text mr-4"> </i>
+          </a>
+          <!--Linkedin -->
+          <a class="li-ic">
+            <i class="fab fa-linkedin-in white-text mr-4"> </i>
+          </a>
+          <!--Instagram-->
+          <a class="ins-ic">
+            <i class="fab fa-instagram white-text"> </i>
+          </a>
+
+        </div>
+        <!-- Grid column -->
+
+      </div>
+      <!-- Grid row-->
+
+    </div>
+  </div>
+
+  <!-- Footer Links -->
+  <div class="container text-center text-md-left mt-5">
+
+    <!-- Grid row -->
+    <div class="row mt-3">
+
+      <!-- Grid column -->
+      <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+
+        <!-- Content -->
+        <h6 class="text-uppercase font-weight-bold">Life Guard</h6>
+        <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
+        <p>Our Website Life Guard will help you to find best doctor and hospital in your city at your fingertips.</p>
+
+      </div>
+      <!-- Grid column -->
+
+      <!-- Grid column -->
+      <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+
+        <!-- Links -->
+        <h6 class="text-uppercase font-weight-bold">Products</h6>
+        <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
+        <p>
+          <a href="#!">MDBootstrap</a>
+        </p>
+        <p>
+          <a href="#!">MDWordPress</a>
+        </p>
+        <p>
+          <a href="#!">BrandFlow</a>
+        </p>
+        <p>
+          <a href="#!">Bootstrap Angular</a>
+        </p>
+
+      </div>
+      <!-- Grid column -->
+
+      <!-- Grid column -->
+      <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+
+        <!-- Links -->
+        <h6 class="text-uppercase font-weight-bold">Useful links</h6>
+        <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
+        <p>
+          <a href="#!">Your Account</a>
+        </p>
+        <p>
+          <a href="#!">Become an Affiliate</a>
+        </p>
+        <p>
+          <a href="#!">Shipping Rates</a>
+        </p>
+        <p>
+          <a href="#!">Help</a>
+        </p>
+
+      </div>
+      <!-- Grid column -->
+
+      <!-- Grid column -->
+      <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+
+        <!-- Links -->
+        <h6 class="text-uppercase font-weight-bold">Contact</h6>
+        <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
+        <p>
+          <i class="fas fa-home mr-3"></i> Agartala, Tripura, India</p>
+        <p>
+          <i class="fas fa-envelope mr-3"></i> info@example.com</p>
+        <p>
+          <i class="fas fa-phone mr-3"></i> + 01 234 567 88</p>
+        <p>
+          <i class="fas fa-print mr-3"></i> + 01 234 567 89</p>
+
+      </div>
+      <!-- Grid column -->
+
+    </div>
+    <!-- Grid row -->
+
+  </div>
+  <!-- Footer Links -->
+
+  <!-- Copyright -->
+  <div class="footer-copyright text-center py-3">© 2019 Copyright:
+    <a href="https://mdbootstrap.com/education/bootstrap/"> lifeguard.com</a>
+  </div>
+  <!-- Copyright -->
+
+</footer>
+<!-- Footer -->
